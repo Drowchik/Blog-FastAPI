@@ -1,0 +1,51 @@
+version: '3.7'
+services:
+  db:
+    image: postgres:16
+    container_name: blog_db
+    volumes:
+      - ./config.yaml:/src/app/config/config.yaml
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=my_blog
+    ports:
+      - "5432:5432"
+  redis:
+    image: redis:7
+    container_name: blog_redis
+    ports:
+      - 6379:6379
+
+  posts:
+    image: posts_image
+    build:
+      context: .
+    container_name: posts_app
+    volumes:
+      - ./config.yaml:/src/app/config/config.yaml
+    command: [ "/blog/src/docker/app.sh" ]
+    ports:
+      - "7777:8000"
+    depends_on:
+      - db
+      - redis
+
+  celery:
+    image: celery_image
+    build:
+      context: .
+    container_name: celery_name
+    command: [ "/blog/src/docker/celery.sh", "celery" ]
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+  flower:
+    image: flower_image
+    build:
+      context: .
+    container_name: flower_name
+    command: [ "/blog/src/docker/celery.sh", "flower" ]
+    depends_on:
+      - redis

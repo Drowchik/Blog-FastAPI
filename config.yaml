@@ -1,0 +1,17 @@
+database:
+  user: postgres
+  password: postgres
+  host: db
+  port: 5432
+  db: my_blog
+
+jwt:
+  algorithm: HS256 
+  secret_key: 8zS7ksglywomSBHtEs2G94tiNf6UkhPIEqvjC71tlUA=
+
+celery:
+  broker: redis://redis:6379/0
+  password: bkxx xcvv teze ismz
+  email: dragonyt1990@gmail.com
+  smtp_host: smtp.gmail.com
+  smtp_port: 465
