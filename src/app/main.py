@@ -25,3 +25,4 @@ def get_app() -> FastAPI:
     app.router.lifespan_context = lifespan
     add_pagination(app)
     return app
+

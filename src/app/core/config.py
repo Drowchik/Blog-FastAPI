@@ -18,6 +18,8 @@ _db_dsn = AnyUrl.build(
 )
 
 class Settings(BaseSettings):
+    app_env: str
+    app_name: str
     db_dsn: str
     timezone: str
     secret_key: str
@@ -28,7 +30,10 @@ class Settings(BaseSettings):
     smtp_host: str
     smtp_port: int
     
-settings = Settings(db_dsn=str(_db_dsn), 
+settings = Settings(
+                    app_env=_settings.app_env,
+                    app_name="blog_api",
+                    db_dsn=str(_db_dsn), 
                     timezone=_project_timezone, 
                     secret_key=_settings.jwt.secret_key, 
                     algorithm=_settings.jwt.algorithm,

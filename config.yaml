@@ -1,3 +1,4 @@
+app_env: production
 database:
   user: postgres
   password: postgres

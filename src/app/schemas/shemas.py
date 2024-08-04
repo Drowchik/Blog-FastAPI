@@ -21,4 +21,5 @@ class SPostResponse(SPostBase):
     class Config:
         from_attributes  = True
 
-    
+class SCategory(BaseModel):
+    name: str

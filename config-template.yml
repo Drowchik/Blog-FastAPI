@@ -1,0 +1,18 @@
+app_env:
+database:
+  user:
+  password:
+  host:
+  port:
+  db:
+
+jwt:
+  algorithm:
+  secret_key:
+
+celery:
+  broker:
+  password:
+  email:
+  smtp_host:
+  smtp_port:

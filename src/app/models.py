@@ -14,8 +14,8 @@ class User(Base):
     __tablename__ = "users"
     
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    name: Mapped[str] = mapped_column(index=True)
-    email: Mapped[str] = mapped_column(unique=True, index=True)
+    name: Mapped[str] = mapped_column()
+    email: Mapped[str] = mapped_column(unique=True)
     hashed_password: Mapped[str] = mapped_column()
     is_active: Mapped[bool] = mapped_column(default=True)
     is_superuser: Mapped[bool] = mapped_column(default=False)
@@ -27,7 +27,7 @@ class Category(Base):
     __tablename__ = "categories"
     
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(unique=True)
+    name: Mapped[str] = mapped_column()
 
     posts: Mapped[list["Post"]] = relationship("Post", back_populates="category")
     

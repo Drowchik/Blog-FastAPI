@@ -11,6 +11,11 @@ services:
       - POSTGRES_DB=my_blog
     ports:
       - "5432:5432"
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
   redis:
     image: redis:7
     container_name: blog_redis
@@ -24,7 +29,7 @@ services:
     container_name: posts_app
     volumes:
       - ./config.yaml:/src/app/config/config.yaml
-    command: [ "/blog/src/docker/app.sh" ]
+    command: /bin/bash -c "alembic upgrade head && gunicorn src.app.asgi:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind=0.0.0.0:8000"
     ports:
       - "7777:8000"
     depends_on:
@@ -36,7 +41,7 @@ services:
     build:
       context: .
     container_name: celery_name
-    command: [ "/blog/src/docker/celery.sh", "celery" ]
+    command: celery --app=src.app.tasks.celery:celery worker -l INFO
     depends_on:
       - redis
     environment:
@@ -46,6 +51,6 @@ services:
     build:
       context: .
     container_name: flower_name
-    command: [ "/blog/src/docker/celery.sh", "flower" ]
+    command: celery -A src.app.tasks.celery flower
     depends_on:
       - redis
